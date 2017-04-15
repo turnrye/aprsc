@@ -307,6 +307,7 @@ struct client_t {
 	time_t keepalive;   /* Time of next keepalive chime */
 	time_t cleanup;     /* Time of next cleanup */
 	time_t next_is2_peer_offer;
+	time_t next_is2_peer_interval;
 
 	struct xpoll_fd_t *xfd; /* poll()/select() structure as defined in xpoll.h */
 	

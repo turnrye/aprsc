@@ -1644,10 +1644,24 @@ static void send_keepalives(struct worker_t *self)
 
 		/* No keepalives on PEER links.. */
 		if ( c->state == CSTATE_COREPEER ) {
-			if (!c->corepeer_is2 && (c->next_is2_peer_offer < tick || c->next_is2_peer_offer > tick + COREPEER_IS2_PROPOSE_T*2)) {
-				c->next_is2_peer_offer = tick + COREPEER_IS2_PROPOSE_T + random() % 10;
+			/* min/max limits for retry timer exponential backoff */
+			if (c->next_is2_peer_interval < COREPEER_IS2_PROPOSE_T_MIN)
+				c->next_is2_peer_interval = COREPEER_IS2_PROPOSE_T_MIN;
+			if (c->next_is2_peer_interval > COREPEER_IS2_PROPOSE_T_MAX)
+				c->next_is2_peer_interval = COREPEER_IS2_PROPOSE_T_MAX;
+			
+			if (!c->corepeer_is2 && (c->next_is2_peer_offer < tick || c->next_is2_peer_offer > tick + COREPEER_IS2_PROPOSE_T_MAX*2)) {
+				c->next_is2_peer_offer = tick + c->next_is2_peer_interval + random() % 5;
+				c->next_is2_peer_interval *= 2;
+				
 				is2_corepeer_propose(self, c);
 			}
+			
+			if (c->corepeer_is2 && (c->next_is2_peer_offer < tick || c->next_is2_peer_offer > tick + COREPEER_IS2_PROPOSE_T_MAX*2)) {
+				c->next_is2_peer_offer = tick + COREPEER_IS2_PROPOSE_T_MAX + random() % 5;
+				is2_corepeer_propose(self, c);
+			}
+			
 			continue;
 		}
 		

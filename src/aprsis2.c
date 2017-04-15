@@ -848,8 +848,11 @@ int is2_corepeer_control_in(struct worker_t *self, struct client_t *c, char *p, 
 			return -1;
 		}
 		
-		// OK, enable
+		/* OK, enable */
 		c->corepeer_is2 = 1;
+		
+		/* Do send offers every 10 minutes away */
+		c->next_is2_peer_offer = tick + COREPEER_IS2_PROPOSE_T_MAX + random() % 5;
 		
 		hlog(LOG_INFO, "%s/%s: IS2 UDP peer mode enabled", c->addr_rem, c->username);
 	}
