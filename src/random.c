@@ -21,10 +21,11 @@ int urandom_open(void)
 	return fd;
 }
 
-int urandom_alphanumeric(int fd, unsigned char *buf, int len)
+int urandom_alphanumeric(int fd, unsigned char *buf, int blen)
 {
 	int l;
 	unsigned char c;
+	int len = blen-1;
 	
 	if (fd >= 0) {
 		/* generate instance id */
