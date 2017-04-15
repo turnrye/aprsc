@@ -498,7 +498,7 @@ static int is2_in_ping(struct worker_t *self, struct client_t *c, IS2Message *m)
 		goto done;
 	}
 	
-	hlog(LOG_INFO, "%s/%s: IS2: Ping %s received: request_id %ul",
+	hlog(LOG_DEBUG, "%s/%s: IS2: Ping %s received: request_id %lu",
 		c->addr_rem, c->username,
 		(ping->ping_type == IS2_KEEPALIVE_PING__PING_TYPE__REQUEST) ? "Request" : "Reply",
 		ping->request_id);
