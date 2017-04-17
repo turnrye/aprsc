@@ -750,8 +750,7 @@ int is2_deframe_input(struct worker_t *self, struct client_t *c, int start_at)
 		char *this = &ibuf[i];
 		
 		if (left < IS2_MINIMUM_FRAME_LEN) {
-			hlog_packet(LOG_DEBUG, this, left, "%s/%s: IS2: Don't have enough data in buffer yet (%d): ",
-				c->addr_rem, c->username, left);
+			//hlog_packet(LOG_DEBUG, this, left, "%s/%s: IS2: Don't have enough data in buffer yet (%d): ", c->addr_rem, c->username, left);
 			break;
 		}
 		
